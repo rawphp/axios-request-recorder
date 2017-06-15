@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "test": "env TZ='UTC' NODE_ENV=test mocha test --compilers js:babel-core/register --require babel-polyfill --recursive",
     "coverage": "istanbul cover --verbose --report text --report lcov _mocha -- --compilers js:babel-core/register --require babel-polyfill test --recursive",
+    "watch": "npm-watch",
     "clean": "rm -Rf dist",
     "build": "yarn run clean && babel src --out-dir dist --copy-files"
   },
@@ -49,5 +50,17 @@
     "sinon": "1.x.x",
     "sinon-chai": "2.x.x",
     "webpack": "2.x.x"
+  },
+  "watch": {
+    "build": {
+      "patterns": [
+        "."
+      ],
+      "extensions": [
+        "js",
+        "json"
+      ],
+      "ignore": "dist/"
+    }
   }
 }

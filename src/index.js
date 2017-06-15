@@ -21,12 +21,13 @@ export default class AxioxRecorder {
    * @returns {Object} the response
    */
   async record(response) {
-    const method = response.request.method.toLowerCase();
+    const method = response.config.method.toLowerCase();
+    const path = this._getPath(response.config.url);
 
     const mock = {
       request: {
-        path: `${this.prefix}${response.request.path}`,
-        headers: this._filterHeaders(response.request._header),
+        path: `${this.prefix}/${path}`,
+        headers: this._filterHeaders(response.config.headers),
         method,
       },
       response: {
@@ -74,9 +75,26 @@ export default class AxioxRecorder {
 
     if (this.enabled) {
       axios.interceptors.response.use(this.record.bind(this));
+      this._getPath.bind(this);
     }
 
     return axios;
+  }
+
+  /**
+   * Retrieve the request path from the url.
+   *
+   * @param {String} url the request url
+   *
+   * @returns {String} the request path
+   *
+   * @private
+   */
+  _getPath(url) {
+    const protocolIndex = url.indexOf('//');
+    const domainPath = url.substr(protocolIndex + 2);
+
+    return domainPath.substr(domainPath.indexOf('/') + 1);
   }
 
   /**
@@ -85,16 +103,14 @@ export default class AxioxRecorder {
    * @param {String} header the request header line
    *
    * @returns {Object} the request header
+   *
+   * @private
    */
   _filterHeaders(header) {
     const headers = {};
 
-    header.split('\r\n').forEach((line) => {
-      if (line.trim().length > 0 && line.indexOf(':') > -1) {
-        const parts = line.trim().split(':');
-
-        headers[parts[0].trim().replace(':', '').toLowerCase()] = parts[1].trim().toLowerCase();
-      }
+    Object.keys(header).forEach((key) => {
+      headers[key.toLowerCase()] = header[key];
     });
 
     return headers;
@@ -106,8 +122,16 @@ export default class AxioxRecorder {
    * @param {Object[]} mocks list of mocks to persist
    *
    * @returns {undefined}
+   *
+   * @private
    */
   async _writeMocks(mocks) {
+    while (this.writing) {
+      await Promise.delay(100);
+    }
+
+    this.writing = true;
+
     try {
       let server;
       const path = `${process.cwd()}/${this.serverFile}`;
@@ -128,8 +152,10 @@ export default class AxioxRecorder {
       });
 
       await fsp.writeJson(path, server);
+      this.writing = false;
     } catch (error) {
       logger.error(error);
+      this.writing = false;
     }
   }
 
@@ -140,6 +166,8 @@ export default class AxioxRecorder {
    * @param {Object}   mock  mock to check
    *
    * @returns {Boolean} true if it exists, otherwise false
+   *
+   * @private
    */
   _mockExists(mocks, mock) {
     return mocks.some(existing => isEqual(existing.request, mock.request));

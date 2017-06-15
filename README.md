@@ -1,5 +1,7 @@
 # Axios Request/Response Recorder
 
+Records request and responses to a file. Pass a custom handler to handle custom persistance of the recorded mocks.
+
 ## Install
 
 ```shell
@@ -11,6 +13,7 @@ npm install axios-request-recorder
 ### Basic Example
 
 ```javascript
+import axios from 'axios';
 import AxiosRecorder from 'axios-request-recorder';
 
 const recorder = new AxiosRecorder();
@@ -24,6 +27,7 @@ recorder.register(axios);
 ### Full Example
 
 ```javascript
+import axios from 'axios';
 import AxiosRecorder from 'axios-request-recorder';
 
 const options = {
