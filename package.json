@@ -11,6 +11,10 @@
     "clean": "rm -Rf dist",
     "build": "yarn run clean && babel src --out-dir dist --copy-files"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rawphp/axios-request-recorder.git"
+  },
   "dependencies": {
     "axios": "0.x.x",
     "bluebird": "3.x.x",
