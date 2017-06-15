@@ -1,7 +1,7 @@
 {
   "name": "axios-request-recorder",
   "description": "A request and response recorder for Axios client",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
