@@ -1,0 +1,46 @@
+{
+  "name": "axios-request-recorder",
+  "description": "A request and response recorder for Axios client",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "env TZ='UTC' NODE_ENV=test mocha test --compilers js:babel-core/register --require babel-polyfill --recursive",
+    "coverage": "istanbul cover --verbose --report text --report lcov _mocha -- --compilers js:babel-core/register --require babel-polyfill test --recursive",
+    "clean": "rm -Rf dist",
+    "build": "yarn run clean && babel src --out-dir dist --copy-files"
+  },
+  "dependencies": {
+    "axios": "0.x.x",
+    "bluebird": "3.x.x",
+    "fs-promise": "2.x.x",
+    "is-equal": "1.x.x"
+  },
+  "devDependencies": {
+    "babel-cli": "6.x.x",
+    "babel-core": "6.x.x",
+    "babel-eslint": "7.x.x",
+    "babel-loader": "6.x.x",
+    "babel-preset-env": "1.x.x",
+    "babel-preset-stage-3": "6.x.x",
+    "chai": "3.x.x",
+    "dirty-chai": "1.x.x",
+    "esdoc": "0.4.8",
+    "esdoc-es7-plugin": "0.x.x",
+    "eslint": "3.x.x",
+    "eslint-config-airbnb": "14.x.x",
+    "eslint-plugin-import": "2.x.x",
+    "eslint-plugin-jsx-a11y": "4.x.x",
+    "eslint-plugin-react": "6.x.x",
+    "eslint-plugin-require-jsdoc": "1.x.x",
+    "istanbul": "^1.1.0-alpha.1",
+    "json-loader": "0.x.x",
+    "mocha": "3.x.x",
+    "npm-watch": "0.x.x",
+    "proxyquire": "1.x.x",
+    "sinon": "1.x.x",
+    "sinon-chai": "2.x.x",
+    "webpack": "2.x.x"
+  }
+}
